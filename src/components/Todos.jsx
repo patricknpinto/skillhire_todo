@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import List from '@material-ui/core/List';
 import Todo from './Todo';
+import NewTodo from './NewTodo';
+import uuid from 'uuid/v1';
 
 const Todos = () => {
   const [todos, setTodos] = useState([
@@ -32,10 +34,21 @@ const Todos = () => {
     setTodos(newTodos)
   }
 
+  const addTodo = (name) => {
+    if (!name) {
+      return
+    }
+
+    setTodos([...todos, { name, isDone: false, id: uuid() }])
+  }
+
   return (
-    <List component="nav" aria-label="todo list">
-      { todos.map((todo) => (<Todo key={todo.id} todo={todo} toggleDone={toggleDone} />)) }
-    </List>
+    <>
+      <NewTodo addTodo={addTodo} />
+      <List component="nav" aria-label="todo list">
+        { todos.map((todo) => (<Todo key={todo.id} todo={todo} toggleDone={toggleDone} />)) }
+      </List>
+    </>
   );
 }
 
